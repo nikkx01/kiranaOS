@@ -14,8 +14,8 @@ import {
 import { useAuth, AuthProvider } from '@/hooks/useAuth';
 
 const PERKS = [
-  'Pre-loaded 200+ grocery products instantly',
-  'Billing terminal ready from day one',
+  'Add your own products and set your own prices',
+  'Billing terminal ready — make your first purja today',
   'Your shop name printed on every receipt',
   'Full sales history & profit reports',
   'Complete data privacy — only you can see your data',

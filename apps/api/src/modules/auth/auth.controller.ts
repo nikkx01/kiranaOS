@@ -4,7 +4,7 @@ import { prisma } from '../../config/prisma';
 import { signToken } from '../../utils/jwt';
 import { sendSuccess, sendError } from '../../utils/response';
 import { AuthenticatedRequest } from '../../middleware/authenticate';
-import { CATEGORIES_DATA, PRODUCTS_CATALOG } from '../../data/catalog';
+
 
 export const login = async (
   req: AuthenticatedRequest,
@@ -111,33 +111,6 @@ export const register = async (
     const user = await prisma.user.create({
       data: { name, email, passwordHash, role: 'ADMIN' },
     });
-
-    // Seed all 8 categories for this user
-    const categoryMap = new Map<string, string>();
-    for (const cat of CATEGORIES_DATA) {
-      const created = await prisma.category.create({
-        data: { name: cat.name, description: cat.desc, userId: user.id },
-      });
-      categoryMap.set(cat.name, created.id);
-    }
-
-    // Seed all 200 products using shared catalog
-    for (const p of PRODUCTS_CATALOG) {
-      const categoryId = categoryMap.get(p.cat);
-      if (!categoryId) continue;
-      await prisma.product.create({
-        data: {
-          name: p.name,
-          sku: `${p.sku}-${user.id.slice(-4)}`,
-          categoryId,
-          sellingPrice: p.sp,
-          costPrice: p.cp,
-          unit: p.unit,
-          stockQty: p.stock,
-          userId: user.id,
-        },
-      });
-    }
 
     const token = signToken({
       userId: user.id,

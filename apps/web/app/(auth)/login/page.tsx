@@ -250,8 +250,8 @@ function LoginForm() {
           <div className="mt-6 rounded-xl border border-white/6 bg-white/3 p-4 space-y-2">
             <p className="text-xs font-semibold text-slate-400 mb-3">What you get after registering:</p>
             {[
-              'Pre-loaded with 200 popular grocery items',
-              'Instant billing terminal — start selling today',
+              'Add your own products with your own prices',
+              'Instant billing terminal — make purja from day one',
               'Your shop name on every printed receipt',
             ].map((item) => (
               <div key={item} className="flex items-start gap-2">
