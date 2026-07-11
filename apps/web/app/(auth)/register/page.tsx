@@ -2,8 +2,24 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Store, Eye, EyeOff, Loader2 } from 'lucide-react';
+import {
+  Store,
+  Eye,
+  EyeOff,
+  Loader2,
+  CheckCircle2,
+  Sparkles,
+  ArrowRight,
+} from 'lucide-react';
 import { useAuth, AuthProvider } from '@/hooks/useAuth';
+
+const PERKS = [
+  'Pre-loaded 200+ grocery products instantly',
+  'Billing terminal ready from day one',
+  'Your shop name printed on every receipt',
+  'Full sales history & profit reports',
+  'Complete data privacy — only you can see your data',
+];
 
 function RegisterForm() {
   const { register } = useAuth();
@@ -32,28 +48,87 @@ function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-4">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-purple-500/10 blur-3xl" />
+    <div className="min-h-screen flex bg-slate-950">
+      {/* ── Left Panel ── */}
+      <div className="hidden lg:flex flex-col justify-between w-[45%] relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 p-12">
+        {/* Background blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[-80px] left-[-80px] h-[400px] w-[400px] rounded-full bg-blue-600/20 blur-[120px]" />
+          <div className="absolute bottom-[-60px] right-[-60px] h-[350px] w-[350px] rounded-full bg-indigo-600/20 blur-[100px]" />
+        </div>
+
+        {/* Logo */}
+        <div className="relative flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-500/40">
+            <Store className="h-5 w-5 text-white" />
+          </div>
+          <span className="text-xl font-bold text-white tracking-tight">KiranaOS</span>
+        </div>
+
+        {/* Hero */}
+        <div className="relative space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-green-400" />
+            <span className="text-xs font-medium text-green-300">Free to get started — no card needed</span>
+          </div>
+
+          <h1 className="text-4xl font-extrabold text-white leading-tight">
+            Set up your
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              digital shop today.
+            </span>
+          </h1>
+
+          <p className="text-base text-slate-400 leading-relaxed max-w-sm">
+            Register in under a minute. Your store will be pre-loaded with
+            200+ common grocery items so you can start billing your first
+            customer immediately.
+          </p>
+
+          {/* Perks */}
+          <div className="space-y-3 pt-2">
+            {PERKS.map((perk) => (
+              <div key={perk} className="flex items-center gap-3">
+                <CheckCircle2 className="h-4 w-4 text-green-400 shrink-0" />
+                <span className="text-sm text-slate-300">{perk}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Back to login */}
+        <div className="relative">
+          <Link
+            href="/login"
+            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+          >
+            Already have a store? Sign in
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
       </div>
 
-      <div className="relative w-full max-w-md">
-        {/* Card */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
-          {/* Logo */}
-          <div className="flex flex-col items-center mb-6">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-500/30 mb-4">
-              <Store className="h-7 w-7 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-white">Register Store</h1>
-            <p className="text-sm text-slate-400 mt-1">Start your business with KiranaOS</p>
+      {/* ── Right Panel: Register Form ── */}
+      <div className="flex flex-1 flex-col items-center justify-center p-8 bg-slate-950">
+        {/* Mobile logo */}
+        <div className="flex lg:hidden items-center gap-2 mb-8">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600">
+            <Store className="h-5 w-5 text-white" />
+          </div>
+          <span className="text-lg font-bold text-white">KiranaOS</span>
+        </div>
+
+        <div className="w-full max-w-sm">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-white">Create your store</h2>
+            <p className="text-sm text-slate-400 mt-1.5">
+              Get your digital kirana shop running in seconds.
+            </p>
           </div>
 
           {/* Error */}
           {error && (
-            <div className="mb-4 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
+            <div className="mb-5 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
               {error}
             </div>
           )}
@@ -70,14 +145,14 @@ function RegisterForm() {
                 value={shopName}
                 onChange={(e) => setShopName(e.target.value)}
                 required
-                placeholder="Anand General Store"
-                className="w-full rounded-lg border border-white/10 bg-white/8 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                placeholder="e.g. Sharma General Store"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
             </div>
 
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-1.5">
-                Owner Name
+                Your Name
               </label>
               <input
                 id="name"
@@ -85,8 +160,8 @@ function RegisterForm() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="Nikhil Anand"
-                className="w-full rounded-lg border border-white/10 bg-white/8 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                placeholder="e.g. Ramesh Sharma"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
             </div>
 
@@ -100,8 +175,8 @@ function RegisterForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="owner@mybusiness.com"
-                className="w-full rounded-lg border border-white/10 bg-white/8 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                placeholder="you@yourshop.com"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
             </div>
 
@@ -116,13 +191,13 @@ function RegisterForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="••••••••"
-                  className="w-full rounded-lg border border-white/10 bg-white/8 px-4 py-2.5 pr-10 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors"
+                  placeholder="Min. 6 characters"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 pr-11 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -132,20 +207,23 @@ function RegisterForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-transparent disabled:opacity-60 disabled:cursor-not-allowed transition-all mt-2"
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-2"
             >
               {isLoading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  Creating Store…
+                  Setting up your store…
                 </>
               ) : (
-                'Register & Start Business'
+                <>
+                  <Sparkles size={15} />
+                  Create Store & Start Billing
+                </>
               )}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-slate-400">
+          <p className="mt-6 text-center text-xs text-slate-500">
             Already have a store?{' '}
             <Link href="/login" className="text-blue-400 hover:underline font-semibold">
               Sign in here
