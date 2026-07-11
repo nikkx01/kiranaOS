@@ -4,6 +4,7 @@ import { prisma } from '../../config/prisma';
 import { signToken } from '../../utils/jwt';
 import { sendSuccess, sendError } from '../../utils/response';
 import { AuthenticatedRequest } from '../../middleware/authenticate';
+import { CATEGORIES_DATA, PRODUCTS_CATALOG } from '../../data/catalog';
 
 export const login = async (
   req: AuthenticatedRequest,
@@ -105,45 +106,34 @@ export const register = async (
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
-    
+
     // Create new user
     const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        passwordHash,
-        role: 'ADMIN',
-      },
+      data: { name, email, passwordHash, role: 'ADMIN' },
     });
 
-    // Onboard/pre-seed default categories for the new store owner
-    const dairyCat = await prisma.category.create({
-      data: { name: `Dairy - ${shopName}`, description: 'Milk, butter, dahi', userId: user.id },
-    });
-    const snacksCat = await prisma.category.create({
-      data: { name: `Snacks - ${shopName}`, description: 'Biscuits, chips, noodles', userId: user.id },
-    });
-    const bevCat = await prisma.category.create({
-      data: { name: `Beverages - ${shopName}`, description: 'Cold drinks, juices', userId: user.id },
-    });
-    const grainsCat = await prisma.category.create({
-      data: { name: `Grains - ${shopName}`, description: 'Atta, rice, dal, salt', userId: user.id },
-    });
+    // Seed all 8 categories for this user
+    const categoryMap = new Map<string, string>();
+    for (const cat of CATEGORIES_DATA) {
+      const created = await prisma.category.create({
+        data: { name: cat.name, description: cat.desc, userId: user.id },
+      });
+      categoryMap.set(cat.name, created.id);
+    }
 
-    // Onboard default products catalog
-    const defaultProducts = [
-      { name: 'Amul Milk 500ml', sku: `DRY-${user.id.slice(-3)}-001`, categoryId: dairyCat.id, sellingPrice: 28, costPrice: 25, unit: 'PCS' as any, stockQty: 50 },
-      { name: 'Amul Butter 100g', sku: `DRY-${user.id.slice(-3)}-002`, categoryId: dairyCat.id, sellingPrice: 58, costPrice: 52, unit: 'PCS' as any, stockQty: 30 },
-      { name: 'Marie Gold Biscuits 250g', sku: `SNC-${user.id.slice(-3)}-001`, categoryId: snacksCat.id, sellingPrice: 35, costPrice: 29, unit: 'PACK' as any, stockQty: 60 },
-      { name: 'Maggi Noodles 70g', sku: `SNC-${user.id.slice(-3)}-002`, categoryId: snacksCat.id, sellingPrice: 14, costPrice: 11.5, unit: 'PACK' as any, stockQty: 100 },
-      { name: 'Coca Cola 2.25L', sku: `BEV-${user.id.slice(-3)}-001`, categoryId: bevCat.id, sellingPrice: 100, costPrice: 86, unit: 'PCS' as any, stockQty: 24 },
-      { name: 'Tata Salt 1kg', sku: `GRN-${user.id.slice(-3)}-001`, categoryId: grainsCat.id, sellingPrice: 28, costPrice: 22, unit: 'KG' as any, stockQty: 80 },
-    ];
-
-    for (const p of defaultProducts) {
+    // Seed all 200 products using shared catalog
+    for (const p of PRODUCTS_CATALOG) {
+      const categoryId = categoryMap.get(p.cat);
+      if (!categoryId) continue;
       await prisma.product.create({
         data: {
-          ...p,
+          name: p.name,
+          sku: `${p.sku}-${user.id.slice(-4)}`,
+          categoryId,
+          sellingPrice: p.sp,
+          costPrice: p.cp,
+          unit: p.unit,
+          stockQty: p.stock,
           userId: user.id,
         },
       });
