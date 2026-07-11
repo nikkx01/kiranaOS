@@ -4,6 +4,7 @@ import { prisma } from '../../config/prisma';
 import { signToken } from '../../utils/jwt';
 import { sendSuccess, sendError } from '../../utils/response';
 import { AuthenticatedRequest } from '../../middleware/authenticate';
+import { CATEGORIES_DATA } from '../../data/catalog';
 
 
 export const login = async (
@@ -111,6 +112,13 @@ export const register = async (
     const user = await prisma.user.create({
       data: { name, email, passwordHash, role: 'ADMIN' },
     });
+
+    // Seed 8 default grocery categories so new user can start adding products immediately
+    for (const cat of CATEGORIES_DATA) {
+      await prisma.category.create({
+        data: { name: cat.name, description: cat.desc, userId: user.id },
+      });
+    }
 
     const token = signToken({
       userId: user.id,
