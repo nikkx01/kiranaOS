@@ -123,7 +123,7 @@ function LoginForm() {
             </Link>
           </p>
           <p className="mt-3 text-center text-[10px] text-slate-500">
-            Demo credentials: admin@kiranaos.com / admin123
+            Demo credentials: nikhil@kirana.com / nikhil123
           </p>
         </div>
       </div>

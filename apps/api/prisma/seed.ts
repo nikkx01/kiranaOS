@@ -209,19 +209,19 @@ async function main() {
   await prisma.product.deleteMany({});
   await prisma.category.deleteMany({});
 
-  console.log('🌱 Seeding administrative user credentials...');
-  const passwordHash = await bcrypt.hash('admin123', 12);
+  console.log('🌱 Seeding owner user credentials...');
+  const passwordHash = await bcrypt.hash('nikhil123', 12);
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@kiranaos.com' },
+    where: { email: 'nikhil@kirana.com' },
     update: { passwordHash },
     create: {
-      name: 'Admin User',
-      email: 'admin@kiranaos.com',
+      name: 'Nikhil Anand',
+      email: 'nikhil@kirana.com',
       passwordHash,
       role: UserRole.ADMIN,
     },
   });
-  console.log(`✅ Seeded login credentials: ${admin.email} / admin123`);
+  console.log(`✅ Seeded owner credentials: ${admin.email} / nikhil123`);
 
   // Seed Categories
   const categoryMap = new Map<string, string>();
@@ -286,11 +286,11 @@ async function main() {
   }
   console.log(`✅ Seeded exactly ${createdProducts.length} items in the database catalog.`);
 
-  // Generate 180+ Completed bills over the last 30 days
-  console.log('🌱 Generating historical sales bills for the past 30 days (180+ bills)...');
+  // Generate 60 Completed bills over the last 30 days
+  console.log('🌱 Generating historical sales bills for the past 30 days (60 bills)...');
   
-  const billsToGenerate = 190;
-  const batchSize = 20;
+  const billsToGenerate = 60;
+  const batchSize = 10;
   let totalBillsCreated = 0;
 
   // Distribute bills timeline across the last 30 days

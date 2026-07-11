@@ -128,7 +128,7 @@ npm run dev
 ---
 
 ## 🔐 Demo Credentials
-Log in to your local or deployed dashboard using:
+Log in to your local or deployed dashboard using the pre-seeded store owner account (fully populated with 200 products & 60 bills of active retail history):
 
-* **Email:** `admin@kiranaos.com`
-* **Password:** `admin123`
+* **Email:** `nikhil@kirana.com`
+* **Password:** `nikhil123`
