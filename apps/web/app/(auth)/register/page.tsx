@@ -80,9 +80,8 @@ function RegisterForm() {
           </h1>
 
           <p className="text-base text-slate-400 leading-relaxed max-w-sm">
-            Register in under a minute. Your store will be pre-loaded with
-            200+ common grocery items so you can start billing your first
-            customer immediately.
+            Register in under a minute. Set up your custom grocery catalog and start
+            billing your customers immediately.
           </p>
 
           {/* Perks */}

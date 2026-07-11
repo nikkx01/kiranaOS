@@ -27,7 +27,7 @@ const FEATURES = [
   {
     icon: Package,
     title: 'Inventory Management',
-    desc: 'Track 200+ products, get low-stock alerts before you run out.',
+    desc: 'Track products, stock quantities, and get low-stock alerts before you run out.',
   },
   {
     icon: BarChart3,
@@ -42,7 +42,7 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { value: '200+', label: 'Products Supported' },
+  { value: 'Unlimited', label: 'Products & Stock' },
   { value: '30 Days', label: 'Sales History' },
   { value: '100%', label: 'Data Isolated' },
 ];

@@ -4,7 +4,7 @@ import { sendSuccess } from '../../utils/response';
 import { AuthenticatedRequest } from '../../middleware/authenticate';
 
 export const getSummary = async (
-  _req: AuthenticatedRequest,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
@@ -15,6 +15,7 @@ export const getSummary = async (
     todayEnd.setHours(23, 59, 59, 999);
 
     const dateFilter = {
+      userId: req.user!.userId,
       createdAt: { gte: todayStart, lte: todayEnd },
       status: 'COMPLETED' as const,
     };
@@ -75,6 +76,7 @@ export const getBestSellers = async (
       by: ['productId', 'productName'],
       where: {
         bill: {
+          userId: req.user!.userId,
           createdAt: dateFilter,
           status: 'COMPLETED',
         },

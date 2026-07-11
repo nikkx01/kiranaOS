@@ -126,6 +126,7 @@ export const listBills = async (
     const skip = (pageNum - 1) * limitNum;
 
     const where = {
+      userId: req.user!.userId,
       ...(status && { status: status as 'DRAFT' | 'COMPLETED' | 'CANCELLED' }),
       ...(from || to
         ? {
@@ -168,8 +169,8 @@ export const getBill = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const bill = await prisma.bill.findUnique({
-      where: { id: req.params.id },
+    const bill = await prisma.bill.findFirst({
+      where: { id: req.params.id, userId: req.user!.userId },
       include: {
         items: {
           include: { product: { select: { id: true, name: true, unit: true } } },

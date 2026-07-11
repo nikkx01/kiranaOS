@@ -18,7 +18,7 @@ export function proxy(request: NextRequest): NextResponse {
     }
   }
 
-  if (isPublic && token) {
+  if (pathname.startsWith('/login') && token) {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);

@@ -42,22 +42,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (name: string, email: string, password: string, shopName: string): Promise<void> => {
-    const res = await api.post<{ data: AuthResponse }>('/api/auth/register', { name, email, password, shopName });
-    const { token, user: loggedInUser } = res.data.data!;
+    await api.post('/api/auth/register', { name, email, password, shopName });
     
     // Save shop configuration to local storage so settings dialog correctly initializes with it
     localStorage.setItem('storeName', shopName);
     localStorage.setItem('storeAddress', 'Main Market, Sector 4, Patna, Bihar');
     localStorage.setItem('storePhone', '+91 98765 43210');
     localStorage.setItem('storeGst', '');
-
-    saveAuth(token, loggedInUser);
-    document.cookie = `kirana_token=${token}; path=/; max-age=86400; SameSite=Strict`;
-    setUser(loggedInUser);
     
     // Notify app components that store configuration has changed
     window.dispatchEvent(new Event('storeSettingsUpdated'));
-    router.push('/dashboard');
+    
+    alert('Store registered successfully! Please sign in with your email and password.');
+    router.push('/login');
   };
 
   const updateProfile = async (name: string, email: string): Promise<void> => {
