@@ -15,7 +15,7 @@ The platform supports a full multi-tenant architecture, allowing any grocery sho
 
 ## 🏛️ System Architecture
 
-The application is structured as a TypeScript monorepo using **npm workspaces** and **Turborepo** for optimized local compilation and deployment pipelines.
+The application is structured as a TypeScript monorepo using **npm workspaces** and **Turborepo** for optimized local compilation and deployment pipelines.  
 
 * **Backend (`apps/api`):** A Node.js/Express REST server that integrates with a PostgreSQL database via Prisma ORM. Secures endpoint routes via JWT validation and Helmet headers. Enforces strict multitenancy constraints on all query selectors.
 * **Frontend (`apps/web`):** A Next.js (App Router) client built with Tailwind CSS v4, providing an optimized dashboard for tablet and desktop billing terminals.
